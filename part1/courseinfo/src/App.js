@@ -10,8 +10,12 @@ const App = () => {
   return(
     <div>
       <Header title={course} />
-      <Content name1={part1} exercise1={exercises1} name2={part2} exercise2={exercises2} name3={part3} exercise3={exercises3} />
-      <Total exercises1={exercises1} exercises2={exercises2} exercises3={exercises3}/>
+      <Content name1={part1} exercise1={exercises1} 
+                name2={part2} exercise2={exercises2} 
+                name3={part3} exercise3={exercises3} />
+      <Total exercises1={exercises1} 
+              exercises2={exercises2}  
+              exercises3={exercises3}/>
 
     </div>
     )
@@ -28,20 +32,21 @@ const Header = (course) => {
 }
 
 
-const Content = (part) => {
-
-
+const Part = (props) =>{
   return(
+    <p>
+      {props.name} {props.exercise}
+    </p>
+  )
+}
+
+
+const Content = (props) => {
+  return (
     <div>
-      { <p>
-        {part.name1} {part.exercise1}
-      </p> }
-      <p>
-        {part.name2} {part.exercises2}
-      </p>
-      <p>
-        {part.name3} {part.exercises3}
-      </p>
+      <Part name={props.name1} exercise={props.exercise1}/>
+      <Part name={props.name2} exercise={props.exercise2}/>
+      <Part name={props.name3} exercise={props.exercise3}/>
 
     </div>
   )
@@ -53,8 +58,5 @@ const Total = (add) => {
     <p>Number of exercises {add.exercises1 + add.exercises2 + add.exercises3}</p>
   )
 }
-
-
-
 
 export default App
