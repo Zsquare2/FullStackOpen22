@@ -1,5 +1,10 @@
 import { useState } from 'react'
 
+
+const StatisticLine = (props) =>(
+  <p>{props.text} {props.value}</p>
+)
+
 const Statistiscs = ({good, neutral, bad, total, average, positive}) =>{
   if (total === 0)
     return(
@@ -9,22 +14,16 @@ const Statistiscs = ({good, neutral, bad, total, average, positive}) =>{
     )
   return(
     <div>
-      <p>
-        good {good}<br />
-        neutral {neutral} <br />
-        bad {bad} <br />
-        all {total} <br />
-        average {average} <br />
-        positive {positive} <br />
-      </p>
+        <StatisticLine text="good" value={good} />
+        <StatisticLine text="neutral" value={neutral}/>
+        <StatisticLine text="bad" value= {bad}/>
+        <StatisticLine text="all" value= {total}/>
+        <StatisticLine text="average" value= {average}/>
+        <StatisticLine text="positive" value= {positive}/>
     </div>
   ) 
 }
 
-// const Display = props =>(
-//    <div>{props.text} {props.value}
-//    </div>
-// )
 
 const Button = (props) => (
   <button onClick={props.handleClick}>
