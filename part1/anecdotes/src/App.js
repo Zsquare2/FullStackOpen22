@@ -22,14 +22,13 @@ const App = () => {
    
   const [selected, setSelected] = useState(0)
 
-  
   // arrays lenggt bcs used not once
   const arrLength = anecdotes.length
   
-  //new array for counting vots 
+  //new array for counting votes and function to update values in it 
   const[votes, setVotes] = useState(new Array(arrLength).fill(0))
 
-  // finction gets random number 
+  // function gets random number 
   let getRandomInt = (max) =>(
     Math.floor(Math.random() * max)
   )
@@ -39,24 +38,28 @@ const App = () => {
     setSelected(getRandomInt(arrLength))
   }
 
-  
-
   //handle votes
   const handleVote = () =>{
     const copy = [...votes]
     copy[selected] += 1
     setVotes(copy)
-    console.log(copy)
   }
 
+  //use the Math.max method to get the max value in the array.
+  const max = Math.max.apply(null, votes);
+
+  //get the index of the last value, by using the Array.indexOf method.
+  const mostVotesIndex = votes.indexOf(max);
   
 
   return (
     <div>
+      <h1>Anecdote of the day</h1>
       {anecdotes[selected]}
       <Button handleClicsk={newAnecdote} text="Dipsplay next"/>
       <Button handleClicsk={handleVote} text="vote" />
-
+      <h1>Anecdote with most votes</h1>
+      {anecdotes[mostVotesIndex]}
     </div>
   )
 }
