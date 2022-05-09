@@ -21,19 +21,41 @@ const App = () => {
   ]
    
   const [selected, setSelected] = useState(0)
+
   
-  const getRandomInt = (max) =>(
+  // arrays lenggt bcs used not once
+  const arrLength = anecdotes.length
+  
+  //new array for counting vots 
+  const[votes, setVotes] = useState(new Array(arrLength).fill(0))
+
+  // finction gets random number 
+  let getRandomInt = (max) =>(
     Math.floor(Math.random() * max)
   )
 
+  //gets random number to pick anecdote
   const newAnecdote = () => {
-    setSelected(getRandomInt(anecdotes.length))
+    setSelected(getRandomInt(arrLength))
   }
+
+  
+
+  //handle votes
+  const handleVote = () =>{
+    const copy = [...votes]
+    copy[selected] += 1
+    setVotes(copy)
+    console.log(copy)
+  }
+
+  
 
   return (
     <div>
       {anecdotes[selected]}
       <Button handleClicsk={newAnecdote} text="Dipsplay next"/>
+      <Button handleClicsk={handleVote} text="vote" />
 
     </div>
   )
