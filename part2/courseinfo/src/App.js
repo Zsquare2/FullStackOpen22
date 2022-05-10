@@ -10,6 +10,16 @@ const Content =({ course }) =>{
   )
 }
 
+const Total = ({parts}) =>{
+  const totalExercises = parts.reduce((sum, part) =>
+    sum + part.exercises, 0 )
+    console.log("total amount: ", totalExercises)
+
+  return(
+    <b>total of {totalExercises} exercises</b>
+  )
+}
+
 const Course = ({ course }) =>{
   console.log("From Coures: ",course)
   const parts = course.parts
@@ -17,9 +27,11 @@ const Course = ({ course }) =>{
   return(
    <div>
      <Header course={course.name} />
-        {parts.map(parts => 
-          <Content key={parts.id} course={parts} />
-        )}
+      {parts.map(parts => 
+        <Content key={parts.id} course={parts} />
+      )}
+    <Total parts={parts} />
+
    </div>
   )
 }
