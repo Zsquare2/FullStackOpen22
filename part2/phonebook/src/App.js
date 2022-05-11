@@ -1,6 +1,6 @@
 import { useState } from 'react'
 
-const Names = ({ name }) => <tr><td>{name.name}</td></tr>
+const Names = ({ name }) => <tr><td>{name.name} {name.number}</td></tr>
 
 
 const App = () => {
@@ -10,12 +10,17 @@ const App = () => {
     }
   ]) 
   const [newName, setNewName] = useState('')
+  const [newNumber, setNewNumber] = useState('')
 
   const handleNameChange = (event) =>{
     console.log(event.target.value)
     setNewName(event.target.value)
   }
-
+  
+  const handleNumberChange = (event) =>{
+    console.log(event.target.value)
+    setNewNumber(event.target.value)
+  }
 
   const addName = (event) =>{
     event.preventDefault()
@@ -31,11 +36,13 @@ const App = () => {
       }else{
       const newObject = {
         name: newName,
+        number: newNumber,
         // id: persons.length +1
       }
-
       setPersons(persons.concat(newObject))
+
       setNewName("")
+      setNewNumber("")
     }}
 
 
@@ -49,6 +56,14 @@ const App = () => {
             onChange={handleNameChange}
             />
         </div>
+
+        <div>
+          number: <input 
+          value={newNumber}
+          onChange={handleNumberChange}
+          />          
+        </div>
+
         <div>
           <button type="submit">add</button>
         </div>
