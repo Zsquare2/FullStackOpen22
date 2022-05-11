@@ -1,10 +1,7 @@
 import { useState } from 'react'
 
-const Names = ({ name }) =>{
-  return(
-    <tr><td>{name.name}</td></tr>
-  )
-}
+const Names = ({ name }) => <tr><td>{name.name}</td></tr>
+
 
 const App = () => {
   const [persons, setPersons] = useState([
@@ -19,16 +16,27 @@ const App = () => {
     setNewName(event.target.value)
   }
 
+
   const addName = (event) =>{
     event.preventDefault()
+    const namesArray = persons.map(names => names.name)
+
     console.log("button clicked", event.target)
-    const newObject = {
-      name: newName,
-      // id: persons.length +1
-    }
-    setPersons(persons.concat(newObject))
-    setNewName("")
-  }
+    console.log("can i add name :", newName )
+    // nameExists()
+      if (namesArray.includes(newName)){
+        console.log("name exists")
+        window.alert(`${newName} is already added to phonebook`);
+
+      }else{
+      const newObject = {
+        name: newName,
+        // id: persons.length +1
+      }
+
+      setPersons(persons.concat(newObject))
+      setNewName("")
+    }}
 
 
   return (
@@ -47,17 +55,16 @@ const App = () => {
       </form>
       <h2>Numbers</h2>
       <div>debug: {newName}</div>
-<div>
-<table>
-        <tbody>
-          {persons.map((name, index) => 
-            <Names key={index} name={name} />
-          )}
-        </tbody>
-      </table>
-
-</div>
+      <div>
+        <table>
+          <tbody>
+            {persons.map((name, index) => 
+              <Names key={index} name={name} />
+            )}
+          </tbody>
+        </table>
       </div>
+    </div>
   )}
 
 export default App
