@@ -34,7 +34,7 @@ const App = () => {
       <Filter value={searchValue} setSearchValue={setSearchValue} country={countries}/>
 
 
-      <Countries country={countries} searchValue={searchValue}/>
+      <Countries country={countries} searchValue={searchValue} setSearchValue={setSearchValue}/>
     </div>
   )}
 
