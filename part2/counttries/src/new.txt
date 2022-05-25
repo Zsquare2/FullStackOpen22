@@ -1,0 +1,10 @@
+https://api.openweathermap.org/data/2.5/weather?lat=35&lon=139&appid={d860da657c27a70aa29af547bd7e5ab2
+}
+
+https://api.openweathermap.org/data/2.5/weather?q={london}&appid={d860da657c27a70aa29af547bd7e5ab2}
+http://api.weatherstack.com/current?access_key=${api_key}&query=${capital}
+
+
+api key ?: d860da657c27a70aa29af547bd7e5ab2
+
+https://api.openweathermap.org/data/2.5/weather?q=london&appid=d860da657c27a70aa29af547bd7e5ab2&units=metric

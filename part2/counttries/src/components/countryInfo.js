@@ -1,9 +1,20 @@
-const CountryInfo =({ country }) =>{
-    console.log("country in countryinfo" , Object.keys(country.languages))
-  
-    for (let [key, value] of Object.entries(country.languages)) {
-      console.log("in test", key, value)
-    }
+import { useEffect } from "react"
+import axios from "axios"
+import WeatherInfo from "./weatherInfo"
+
+const CountryInfo =({ country , setWeatherInfo, weatherInfo}) =>{
+    
+  useEffect(() => {
+    const API_KEY = process.env.REACT_APP_WEATHER_API_KEY
+    const capital =country.capital
+      if (capital){
+      axios
+      .get(`https://api.openweathermap.org/data/2.5/weather?q=${capital}&appid=${API_KEY}&units=metric`)
+      .then(response => {
+        setWeatherInfo(response.data)
+      })
+    }}, [country, setWeatherInfo])
+    
     return(
       <div>
         <h2>{country.name.common}</h2>
@@ -24,6 +35,7 @@ const CountryInfo =({ country }) =>{
         <p>
           <img src={country.flags.png} alt="flag"/>
         </p>
+      {weatherInfo && <WeatherInfo country={country} weatherInfo={weatherInfo} />}
       </div>
     )
   }
