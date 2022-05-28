@@ -4,24 +4,25 @@ import { Filter} from './components/filter'
 import Persons from './components/persons'
 import React from "react"
 import axios from "axios"
+import personsService from "./services/persons"
 
 
 
 const App = () => {
-  const [persons, setPersons] = useState([
-
-    ])
+  const [persons, setPersons] = useState([])
   const [searchValue, setSearchValue] = useState('')
+
+  console.log('restcountries')
+  console.log(axios.get('https://restcountries.com/v3.1/all'))
 
   useEffect(() => {
     console.log('effect')
-    axios
-      .get('http://localhost:3001/persons')
-      .then(response => {
-        console.log("promise fulfilled")
-        setPersons(response.data)
+    personsService
+      .getAll()
+      .then(initialPersons => {
+        setPersons(initialPersons)
       })
-      }, [])
+  }, [])
 
 
   return (
@@ -33,7 +34,7 @@ const App = () => {
       <PersonForm persons={persons} setPersons={setPersons} />
 
       <h2>Numbers</h2>
-      <Persons persons={persons} searchValue={searchValue}/>
+      <Persons persons={persons} searchValue={searchValue} setPersons={setPersons}/>
     </div>
   )}
 

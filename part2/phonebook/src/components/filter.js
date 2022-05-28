@@ -10,9 +10,16 @@ const Filter = ({value, setSearchValue }) => {
         </div>
         )}
 
-const nameSearch = ({persons, searchValue})=>
-    (persons.filter((search) => (
-        search.name.toLowerCase().indexOf(searchValue.toLowerCase()) !== -1
+const nameSearch = ({persons, searchValue}) =>{
+    console.log("name searh arrey of persons ???", persons)
+    console.log("name search in NAMESEARCH", searchValue)
+  
+        return( 
+            persons.filter((search) => (
+            search.name.toLowerCase().indexOf(searchValue.toLowerCase()) !== -1
         )))
+ 
+
+    }
 
 export {Filter, nameSearch}
