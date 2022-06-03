@@ -11,24 +11,41 @@ const Names = ({ name, handleDeleteButton }) =>
   <td><button onClick={handleDeleteButton}>delete</button></td>
 </tr>
 
-const Persons = ({ persons, searchValue, setPersons }) => {
-  console.log("persons", persons)
-  
+const Persons = ({ persons, searchValue, setPersons, setNotificationMessage, setError }) => {  
   const handleDeleteButtonOf = name =>{
     const id = name.id
-    console.log('deleting id ' + id )
 
     if (window.confirm(`Delete ${name.name} contacts?`)){
       personsService
         .removePerson(id)
         .then(() =>{
-          personsService
-            .getAll()
-            .then(initialPersons => {
-              setPersons(initialPersons)
-            })
+          setNotificationMessage(`'${name.name}' was sucessfully removed`)
+          setTimeout(() => {
+            setNotificationMessage(null)
+          }, 5000)
         })
+        .catch(error => {
+          setError(
+            `Note '${name.name}' was already removed from server`
+          )
+          setTimeout(() => {
+            setError(null)
+          }, 2000)
+        })
+        .then(refres =>{  
+          personsService
+          .getAll()
+          .then(initialPersons => {
+            setPersons(initialPersons)
+          })})
     }
+
+    // personsService
+    // .getAll()
+    // .then(initialPersons => {
+    //   console.log("now!!!!!!!!!!!!!")
+    //   setPersons(initialPersons)
+    // })
   }
 
     return(
