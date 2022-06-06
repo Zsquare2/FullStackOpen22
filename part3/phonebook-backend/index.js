@@ -1,6 +1,8 @@
-const { request, response } = require('express')
+const { request, response, json } = require('express')
 const express = require('express')
 const app = express()
+app.use(express.json())
+
 
 let persons = [
     { 
@@ -55,6 +57,40 @@ app.delete('/api/persons/:id', (request, response) => {
 
     response.status(204).end()
 })
+
+const generateRandomNumber= (min, max) =>{
+    return Math.floor(Math.random() * (max - min) +min)
+}
+
+
+app.post('/api/persons', (request, response) => {
+    console.log("randomaizer", generateRandomNumber(0,10000))
+
+    const body = request.body
+    console.log("bodis", body)
+    
+    if (!body.name && !body.number) {
+        return response.status(400).json({
+            error: 'content missing'
+        })
+    }
+
+    const person = {
+        id: generateRandomNumber(0, 100000),
+        name: body.name,
+        number: body.number,
+    }
+    console.log("personas ", person)
+    persons = persons.concat(person)
+
+    response.json(person)
+})
+
+// app.post('/api/persons', (request, response) => {
+//     const person = request.body
+//     console.log(person)
+//     response.json(person)
+// })
 
 
 
