@@ -64,14 +64,16 @@ const generateRandomNumber= (min, max) =>{
 
 
 app.post('/api/persons', (request, response) => {
-    console.log("randomaizer", generateRandomNumber(0,10000))
-
     const body = request.body
-    console.log("bodis", body)
     
-    if (!body.name && !body.number) {
+    if (!body.name || !body.number) {
         return response.status(400).json({
-            error: 'content missing'
+            error: 'name or number missing'
+        })
+        
+    } if (persons.map(person => person.name).includes(body.name)) {
+        return response.status(400).json({
+            error: 'name must be unique'
         })
     }
 
@@ -80,19 +82,10 @@ app.post('/api/persons', (request, response) => {
         name: body.name,
         number: body.number,
     }
-    console.log("personas ", person)
     persons = persons.concat(person)
 
     response.json(person)
 })
-
-// app.post('/api/persons', (request, response) => {
-//     const person = request.body
-//     console.log(person)
-//     response.json(person)
-// })
-
-
 
 const PORT = 3001
 app.listen(PORT, () => {
