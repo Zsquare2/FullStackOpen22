@@ -2,7 +2,7 @@ const { request, response, json } = require('express')
 const express = require('express')
 const app = express()
 app.use(express.json())
-
+const morgan = require('morgan')
 
 let persons = [
     { 
@@ -26,6 +26,9 @@ let persons = [
         "number": "39-23-6423122"
       }
 ]
+
+app.use(morgan('tiny'))
+
 
 app.get('/', (request, response) => {
     response.send('<h1>Hello World!</h1>')
@@ -70,7 +73,7 @@ app.post('/api/persons', (request, response) => {
         return response.status(400).json({
             error: 'name or number missing'
         })
-        
+
     } if (persons.map(person => person.name).includes(body.name)) {
         return response.status(400).json({
             error: 'name must be unique'
@@ -86,6 +89,11 @@ app.post('/api/persons', (request, response) => {
 
     response.json(person)
 })
+
+const unknownEndpoint = (request, response) => {
+    response.status(404).send({ error: 'uknown endpoint'})
+}
+app.use(unknownEndpoint)
 
 const PORT = 3001
 app.listen(PORT, () => {
