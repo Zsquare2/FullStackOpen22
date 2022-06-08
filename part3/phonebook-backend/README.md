@@ -1,1 +1,1 @@
-online aplication at - https://mighty-fjord-64044.herokuapp.com/api/persons
+online aplication at :) - https://mighty-fjord-64044.herokuapp.com/api/persons
