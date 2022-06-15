@@ -4,6 +4,9 @@ const app = express()
 app.use(express.json())
 const morgan = require('morgan')
 const cors = require('cors')
+const mongoose = require('mongoose')
+require('dotenv').config()
+const Person = require('./models/phonebook')
 
 
 app.use(cors())
@@ -40,13 +43,18 @@ morgan.token('body',
 
 app.use(morgan(':method :url :status :res[content-length] - :response-time ms :body'))
 
+
+
 app.get('/', (request, response) => {
     response.send('<h1>Hello World!</h1>')
   })
 
 
+
 app.get('/api/persons', (request, response) => {
-    response.json(persons)
+    Person.find({}).then(people =>{
+        response.json(people)
+    })
 })
 
 app.get('/api/info', (request, response) => {
@@ -88,16 +96,20 @@ app.post('/api/persons', (request, response) => {
         return response.status(400).json({
             error: 'name must be unique'
         })
+    } 
+    if (body.name === undefined) {
+        return response.status(400).json({ error: 'name missing'})
     }
 
-    const person = {
-        id: generateRandomNumber(0, 100000),
+
+    const person = new Person({
         name: body.name,
         number: body.number,
-    }
-    persons = persons.concat(person)
-
-    response.json(person)
+    })
+    console.log('personas', person)
+    person.save().then(savedPerson => {
+        response.json(savedPerson)
+    })
 })
 
 const unknownEndpoint = (request, response) => {
@@ -105,7 +117,7 @@ const unknownEndpoint = (request, response) => {
 }
 app.use(unknownEndpoint)
 
-const PORT = process.env.PORT || 3001
+const PORT = process.env.PORT
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`)
 })
