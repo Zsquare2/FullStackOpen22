@@ -19,7 +19,7 @@ const Person = mongoose.model('Person', peopleSchema)
 
 if (process.argv.length === 3) {
   mongoose.connect(url)
-  console.log("phonebook:")
+  console.log('phonebook:')
   Person.find({}).then(result => {
     result.forEach(people => {
       console.log(people.name, people.number)
@@ -29,20 +29,20 @@ if (process.argv.length === 3) {
 }
 
 if (3 < process.argv.length  && process.argv.length < 6){
-mongoose
-  .connect(url)
-  .then((result) => {
-    console.log('connected')
+  mongoose
+    .connect(url)
+    .then(() => {
+      console.log('connected')
 
-    const person = new Person({
-      name: newName,
-      number: newNumber,
+      const person = new Person({
+        name: newName,
+        number: newNumber,
+      })
+
+      return person.save()
     })
-
-    return person.save()
-  })
-  .then(() => {
-    console.log(`added ${newName} number ${newNumber} to phonebook`)
-    return mongoose.connection.close()
-  })
-  .catch((err) => console.log(err))}
+    .then(() => {
+      console.log(`added ${newName} number ${newNumber} to phonebook`)
+      return mongoose.connection.close()
+    })
+    .catch((err) => console.log(err))}
