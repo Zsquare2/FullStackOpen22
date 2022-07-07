@@ -71,6 +71,18 @@ test('if likes property missing, default value to 0', async () => {
 
 })
 
+test('if no title or url 400 Bad Request', async () => {
+    const missingDataBlog = {
+    author: "TESTS AUTHOR",
+    likes: "69"
+  }
+  await api
+    .post('/api/blogs')
+    .send(missingDataBlog)
+    .expect(400)
+})
+
+
 afterAll(() => {
   mongoose.connection.close()
 })

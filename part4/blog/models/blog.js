@@ -12,8 +12,8 @@ mongoose.connect(config.MONGODB_URI, { useNewUrlParser: true })
 const blogSchema = new mongoose.Schema({
     title: String,
     author: String,
-    url: String,
-    likes: {type : Number, default : 0}
+    url: {required: true, type: String},
+    likes: {type: Number, default: 0}
   })
 
 
