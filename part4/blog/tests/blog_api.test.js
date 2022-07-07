@@ -13,9 +13,21 @@ test('blogs are returned as json', async () => {
 
 test('there are two notes', async () => {
   const response = await api.get('/api/blogs')
+  console.log("TO JSON!!!!", response.toJSON())
 
   expect(response.body).toHaveLength(2)
 })
+
+test('property of the blog posts is named "id"', async () => {
+  const response = await api.get('/api/blogs')
+  console.log("RESPONSE", response.body)
+
+  response.body.forEach(blog => {
+    console.log("BLOG ID", blog.id)
+    expect(blog._id).toBeDefined()
+  });
+})
+
 
 afterAll(() => {
   mongoose.connection.close()
