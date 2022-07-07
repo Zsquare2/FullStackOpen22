@@ -10,7 +10,6 @@ const api = supertest(app)
 
 beforeEach(async () => {
   await Blog.deleteMany({})
-//   console.log("what blogs", helper.initialBlogs)
 
   for (let blog of helper.initialBlogs) {
     let blogObject = new Blog(blog)
@@ -28,8 +27,6 @@ test('blogs are returned as json', async () => {
 
 test('there are six notes', async () => {
   const response = await api.get('/api/blogs')
-  console.log("TO JSON!!!!", response.toJSON())
-
   expect(response.body).toHaveLength(6)
 })
 
@@ -47,7 +44,6 @@ test('blog can be added', async () => {
     url: "TESTS URL",
     likes: "69"
   }
-  const initialBlogs = await helper.blogsInDb() 
   await api 
     .post('/api/blogs')
     .send(newBlog)
@@ -55,11 +51,25 @@ test('blog can be added', async () => {
     .expect('Content-Type', /application\/json/)
 
   const blogsAtEnd = await helper.blogsInDb()
-  expect(blogsAtEnd).toHaveLength(initialBlogs.length + 1)
+  expect(blogsAtEnd).toHaveLength(helper.initialBlogs.length + 1)
 
 })
 
+test('if likes property missing, default value to 0', async () => {
+  const newBlog = new Blog({
+    title: "TESTS no likes",
+    author: "TESTS no likes",
+    url: "TESTS likes",
+  })
+  
+  await newBlog.save()
+  const id = newBlog._id.toString()
 
+  blogsAtEnd = await helper.blogsInDb()
+  const checkBlog = blogsAtEnd.find(blog => blog.id === id)
+  expect(checkBlog.likes).toBe(0)
+
+})
 
 afterAll(() => {
   mongoose.connection.close()
