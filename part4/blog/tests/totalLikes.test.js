@@ -87,7 +87,8 @@ describe('favorite Blog', () => {
 
     test("where list is array", () => {
         const result = listHelper.favoriteBlog(blogs)
-        expect(result).toEqual(theAnswer)
+        expect(result).toEqual(theAnswer
+            )
     })
 
 })
