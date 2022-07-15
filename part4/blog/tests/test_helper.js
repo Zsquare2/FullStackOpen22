@@ -1,12 +1,28 @@
 const Blog = require('../models/blog')
+const User = require('../models/user')
+
+const initialUsers = [
+    {
+        _id: '62cff5bc1691a0db41694ecc',
+        username: 'tester',
+        name: 'test',
+        passwordHash: '$2b$10$H6cBDoVxdZFUaFbaPFT7SO7YFpThSJKRdU7iduWyFDiGCLEQq9zWe'
+    },
+    {   _id: '62cffa2a697b9547c6747b82',
+        username: 'tester2',
+        name: 'test2',
+        passwordHash: '$2b$10$bacqbERNDZweAJhfUwNLz.iaCrZNi8Aqz2/IBxW3YULga8yKqcmu.'
+    }
+]
 
 const initialBlogs = [
     {
       _id: "5a422a851b54a676234d17f7",
       title: "React patterns",
-      author: "Michael Chan",
+      author: "tester",
       url: "https://reactpatterns.com/",
       likes: 7,
+      user: '62cff5bc1691a0db41694ecc',
       __v: 0
     },
     {
@@ -57,4 +73,10 @@ const blogsInDb = async () => {
     return blogs.map(blog => blog.toJSON())
 }
 
-module.exports = {blogsInDb, initialBlogs}
+const usersInDb = async () => {
+    const users = await User.find({})
+    return users.map(u => u.toJSON())
+  }
+  
+
+module.exports = {blogsInDb, initialBlogs, initialUsers,usersInDb}
