@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react'
 import Blog from './components/Blog'
 import blogService from './services/blogs'
 import logingService from './services/login'
+import Notification from './components/Notification'
 
 const App = () => {
   const [blogs, setBlogs] = useState([])
@@ -11,6 +12,8 @@ const App = () => {
   const [newBlogTitle, setNewBlogTitle] = useState('')
   const [newBlogAuthor, setNewBlogAuthor] = useState('')
   const [newBlogUrl, setNewBlogUrl] = useState('')
+  const [errorMessage, setErrorMessage] = useState(null)
+  const [notificationMessage, setNotificationMessage] = useState(null)
   
 
   useEffect(() => {
@@ -30,8 +33,7 @@ const App = () => {
 
   const handleLogin = async (event) => {
     event.preventDefault()
-
-    // try {
+    try {
       const user = await logingService.login({ username, password})
 
       window.localStorage.setItem(
@@ -42,42 +44,57 @@ const App = () => {
       setUser(user)
       setUsername('')
       setPassword('')
-    } 
-    // setErrorMessage('Wrong credentials')
-    // setTimeout(() => {
-    //   setErrorMessage(null)
-    // }, 5000)
-  // }
+    } catch (exception) {
+      setErrorMessage('wrong credentials')
+      setTimeout(() => {
+        setErrorMessage(null)
+      }, 5000)
+    }
+  }
 
   const handleLogout = () => {
-    console.log("tries to log out")
     window.localStorage.clear()
     setUser(null)
   }
 
   const handleBlogTitleChange = (event) => {
     setNewBlogTitle(event.target.value)
+    console.log("title", newBlogTitle)
   }
   const handleBlogAuthorChange = (event) => {
     setNewBlogAuthor(event.target.value)
+    console.log("author", newBlogAuthor)
   }
   const handleBlogUrlChange = (event) => {
     setNewBlogUrl(event.target.value)
+    console.log("url", newBlogUrl)
   }
 
-  const addBlog = async () => {
-    console.log('add new blog')
+
+  const addBlog = async (event) => {
+  event.preventDefault()
 
     const blogObject = {
       title: newBlogTitle,
       author: newBlogAuthor,
       url: newBlogUrl
     }
-    await blogService.create(blogObject)
-    await blogService.getAll()
-    
-    
+  try{
+    const response = await blogService.create(blogObject)
+    setNotificationMessage( `a new blog ${response.title} by ${response.author} created` )
+    setTimeout(() => {
+      setNotificationMessage(null)
+    },5000)
+  } catch(exception){
+      setErrorMessage( exception.response.data.error)
+      setTimeout(() => {
+        setErrorMessage(null)
+      },5000)
+    }
+    blogService.getAll().then(blogs =>
+      setBlogs( blogs ))
   }
+
 
   const createForm = () => (
     <form onSubmit={addBlog}>
@@ -101,11 +118,11 @@ const App = () => {
       <button type="submit">create</button>
     </form>  
   )
-
   if (user === null) {
     return (
       <div>
         <h2>Log in to application</h2>
+        <Notification message={errorMessage} notification={notificationMessage} />
         <form onSubmit={handleLogin}>
           <div>
             username
@@ -140,7 +157,8 @@ const App = () => {
           <p>
             {user.name} logged-in
           </p>
-          <form onClick={handleLogout} >
+          <Notification message={errorMessage} notification={notificationMessage} />
+          <form onSubmit={handleLogout} >
               <button>logout</button>
           </form>
         </div>
