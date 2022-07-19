@@ -79,14 +79,13 @@ const App = () => {
       author: newBlogAuthor,
       url: newBlogUrl
     }
-try{
+  try{
     const response = await blogService.create(blogObject)
     setNotificationMessage( `a new blog ${response.title} by ${response.author} created` )
     setTimeout(() => {
       setNotificationMessage(null)
     },5000)
-  }
-    catch(exception){
+  } catch(exception){
       setErrorMessage( exception.response.data.error)
       setTimeout(() => {
         setErrorMessage(null)
